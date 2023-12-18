@@ -6,6 +6,8 @@ export interface IUser {
   fullName?: string;
   age?: string;
   monthlyIncome?: string;
+  saverType?: string;
+  categories?: string[];
 }
 
 interface IStore {
@@ -33,6 +35,8 @@ export const useStore = create<IStore>()(
         fullName: '',
         age: '',
         monthlyIncome: '',
+        saverType: '',
+        categories: [],
       },
       setUser: (user: IUser) => set({ ...get().user, user }),
     }),

@@ -1,9 +1,14 @@
-import { useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { FlatList, ListRenderItem } from 'react-native';
 import { Text, YStack } from 'tamagui';
 
 import CategoryComponent from './components/Category.component';
+import { ZCategoriesSchema, initialValues } from './constants';
+import { ICategories } from './types';
 import BackButtonComponent from '../../shared/components/BackButton.component';
+import { useStore } from '../../shared/hooks/useStore';
 import { Button, ButtonText, Container, Subtitle, Title } from '../../tamagui.config';
 
 const CATEGORIES = ['Hogar', 'Transporte', 'Alimentación', 'Moda', 'Salud y bienestar', 'Otros'];
@@ -19,6 +24,23 @@ const ListHeaderComponent = () => (
 
 const Category: React.FC = () => {
   const [categoriesBySelected, setCategoriesBySelected] = useState<string[]>([]);
+  const setUser = useStore((state) => state.setUser);
+  const {
+    handleSubmit,
+    setValue,
+    formState: { errors },
+    clearErrors,
+  } = useForm<ICategories>({
+    defaultValues: initialValues,
+    resolver: zodResolver(ZCategoriesSchema),
+    mode: 'all',
+  });
+
+  useEffect(() => {
+    setValue('categories', categoriesBySelected);
+    clearErrors('categories');
+  }, [categoriesBySelected]);
+
   const renderCategoryItem: ListRenderItem<string> = ({ item }) => {
     const isActive = categoriesBySelected.includes(item);
     return (
@@ -26,21 +48,25 @@ const Category: React.FC = () => {
         setCategoriesBySelected={setCategoriesBySelected}
         name={item}
         isActive={isActive}
+        isError={!!errors.categories}
       />
     );
   };
+
   const ListFooterComponet = () => (
     <YStack flex={1}>
-      <Button mt="$3">
+      <Button mt="$3" onPress={handleSubmit(onSubmit)}>
         <ButtonText>Siguiente</ButtonText>
       </Button>
     </YStack>
   );
 
+  const onSubmit = (value: ICategories) => setUser({ categories: value.categories });
+
   return (
     <Container edges={['top']}>
       <BackButtonComponent />
-      <FlatList
+      <FlatList<string>
         style={{ flex: 1 }}
         contentContainerStyle={{
           flexGrow: 1,

@@ -5,6 +5,7 @@ type CategoryComponentProps = {
   isActive?: boolean;
   setCategoriesBySelected: React.Dispatch<React.SetStateAction<string[]>>;
   name: string;
+  isError: boolean;
 };
 
 const ICONS = {
@@ -38,6 +39,7 @@ const CategoryComponent: React.FC<CategoryComponentProps> = ({
   name,
   setCategoriesBySelected,
   isActive,
+  isError,
 }) => (
   <YStack
     flex={1}
@@ -45,7 +47,7 @@ const CategoryComponent: React.FC<CategoryComponentProps> = ({
     m="$2"
     alignItems="center"
     justifyContent="center"
-    borderColor={isActive ? 'gray' : '#D0D5DD'}
+    borderColor={isError ? 'red' : isActive ? 'gray' : '#D0D5DD'}
     borderWidth={1}
     py="$6"
     px="$1"

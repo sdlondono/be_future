@@ -27,7 +27,7 @@ export default function Details() {
 
   const onSubmit = (value: IDetails) => {
     setUser(value);
-    router.push('/category/page');
+    router.push('/saver/page');
   };
 
   return (
