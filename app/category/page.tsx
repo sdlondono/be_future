@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FlatList, ListRenderItem } from 'react-native';
@@ -61,7 +62,11 @@ const Category: React.FC = () => {
     </YStack>
   );
 
-  const onSubmit = (value: ICategories) => setUser({ categories: value.categories });
+  const onSubmit = (value: ICategories) => {
+    const categories = value.categories.map((item) => ({ name: item, value: '' }));
+    setUser({ categories });
+    router.push('/expenses/page');
+  };
 
   return (
     <Container edges={['top']}>

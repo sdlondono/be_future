@@ -7,7 +7,7 @@ export interface IUser {
   age?: string;
   monthlyIncome?: string;
   saverType?: string;
-  categories?: string[];
+  categories: { name: string; value: string }[];
 }
 
 interface IStore {

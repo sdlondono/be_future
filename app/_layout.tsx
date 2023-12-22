@@ -31,6 +31,7 @@ export default function Layout() {
         <Stack.Screen name="details/page" options={{ title: 'Details' }} />
         <Stack.Screen name="saver/page" options={{ title: 'Saver' }} />
         <Stack.Screen name="category/page" options={{ title: 'Category' }} />
+        <Stack.Screen name="expenses/page" options={{ title: 'Category' }} />
       </Stack>
     </TamaguiProvider>
   );
