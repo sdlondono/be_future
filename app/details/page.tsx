@@ -23,10 +23,10 @@ export default function Details() {
     mode: 'all',
   });
 
-  const setUser = useStore((state) => state.setUser);
+  const { setUser } = useStore();
 
   const onSubmit = (value: IDetails) => {
-    setUser({ ...value, categories: [] });
+    setUser({ ...value });
     router.push('/saver/page');
   };
 

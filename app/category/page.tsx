@@ -25,7 +25,7 @@ const ListHeaderComponent = () => (
 
 const Category: React.FC = () => {
   const [categoriesBySelected, setCategoriesBySelected] = useState<string[]>([]);
-  const setUser = useStore((state) => state.setUser);
+  const { setUser } = useStore();
   const {
     handleSubmit,
     setValue,

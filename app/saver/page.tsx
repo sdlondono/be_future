@@ -40,7 +40,7 @@ const ListHeaderComponent = () => (
 const Saver = () => {
   const router = useRouter();
   const [selectedItem, setSelectedItem] = useState<string>('');
-  const setUser = useStore((state) => state.setUser);
+  const { setUser } = useStore();
   const {
     handleSubmit,
     setValue,

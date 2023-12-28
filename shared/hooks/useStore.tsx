@@ -7,11 +7,11 @@ export interface IUser {
   age?: string;
   monthlyIncome?: string;
   saverType?: string;
-  categories: { name: string; value: string }[];
+  categories?: { name: string; value: string }[];
 }
 
 interface IStore {
-  user: IUser;
+  user: IUser | null;
   setUser: (user: IUser) => void;
 }
 
@@ -30,15 +30,9 @@ const storage: PersistStorage<IUser> = {
 
 export const useStore = create<IStore>()(
   persist(
-    (set, get) => ({
-      user: {
-        fullName: '',
-        age: '',
-        monthlyIncome: '',
-        saverType: '',
-        categories: [],
-      },
-      setUser: (user: IUser) => set({ ...get().user, user }),
+    (set) => ({
+      user: null,
+      setUser: (user: IUser) => set((state) => ({ user: { ...state.user, ...user } })),
     }),
     {
       name: 'user-storage', // unique name

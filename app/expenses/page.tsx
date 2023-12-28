@@ -1,4 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { router } from 'expo-router';
+import { Children } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { KeyboardAvoidingView, Platform } from 'react-native';
 import { Form, ScrollView, YStack } from 'tamagui';
@@ -12,23 +14,29 @@ import { useStore } from '../../shared/hooks/useStore';
 import { Container, Main, Subtitle, Title } from '../../tamagui.config';
 
 export default function Expenses() {
-  const categories = useStore((state) => state.user.categories);
-  console.log(categories);
+  const { user, setUser } = useStore();
   const {
     control,
     handleSubmit,
     formState: { errors, isLoading, isSubmitting },
   } = useForm<IExpenses>({
     defaultValues: {
-      fieldsArray: categories,
+      fieldsArray: user?.categories ?? [],
     },
     resolver: zodResolver(ZExpensesSchema),
     mode: 'all',
   });
+
   const { fields } = useFieldArray<IExpenses>({
     control,
     name: 'fieldsArray',
   });
+
+  const onSubmit = (value: IExpenses) => {
+    setUser({ categories: value.fieldsArray });
+    router.push('/proposal/page');
+  };
+
   return (
     <Container edges={['top']}>
       <KeyboardAvoidingView
@@ -42,24 +50,21 @@ export default function Expenses() {
             <YStack flex={1}>
               <Title>Gastos Mensuales</Title>
               <Subtitle>Organicemos tus gastos mensuales de manera detallada</Subtitle>
-              <Form
-                space="$3"
-                mt="$6"
-                flex={1}
-                onSubmit={handleSubmit((value) => console.log(value))}>
-                {fields.map((item, index) => (
-                  <ControllerComponent
-                    key={item.id}
-                    control={control}
-                    name={`fieldsArray.${index}.value`}
-                    placeholder="Total de gastos"
-                    label={`Gastos en ${fields[index].name.toLowerCase()}`}
-                    textContentType="name"
-                    returnKeyType="next"
-                    isError={!!errors.fieldsArray?.[index]?.value}
-                    error={errors.fieldsArray?.[index]?.value?.message}
-                  />
-                ))}
+              <Form space="$3" mt="$6" flex={1} onSubmit={handleSubmit(onSubmit)}>
+                {Children.toArray(
+                  fields.map((_, index) => (
+                    <ControllerComponent
+                      control={control}
+                      name={`fieldsArray.${index}.value`}
+                      placeholder="Total de gastos"
+                      label={`Gastos en ${fields[index].name.toLowerCase()}`}
+                      textContentType="name"
+                      returnKeyType="next"
+                      isError={!!errors.fieldsArray?.[index]?.value}
+                      error={errors.fieldsArray?.[index]?.value?.message}
+                    />
+                  ))
+                )}
                 <YStack flex={1} justifyContent="flex-end">
                   <SubmitButtonComponent isLoading={isLoading} isSubmitting={isSubmitting}>
                     Siguiente

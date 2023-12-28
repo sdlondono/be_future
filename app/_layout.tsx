@@ -27,11 +27,12 @@ export default function Layout() {
         screenOptions={{
           headerShown: false,
         }}>
-        <Stack.Screen name="index" options={{ title: 'Overview' }} />
-        <Stack.Screen name="details/page" options={{ title: 'Details' }} />
-        <Stack.Screen name="saver/page" options={{ title: 'Saver' }} />
-        <Stack.Screen name="category/page" options={{ title: 'Category' }} />
-        <Stack.Screen name="expenses/page" options={{ title: 'Category' }} />
+        <Stack.Screen name="index" />
+        <Stack.Screen name="details/page" />
+        <Stack.Screen name="saver/page" />
+        <Stack.Screen name="category/page" />
+        <Stack.Screen name="expenses/page" />
+        <Stack.Screen name="proposal/page" />
       </Stack>
     </TamaguiProvider>
   );
